@@ -1,5 +1,4 @@
 FROM centos:7.4.1708
-#FROM ubuntu:16.04
 LABEL MAINTAINER="unisp <cicero.gadelha@funceme.br | jonas.cavalcantineto@funceme.com>"
 
 RUN yum update -y 
@@ -22,40 +21,6 @@ RUN yum install -y \
 			libseccomp \
 			selinux-policy.noarch \
 			selinux-policy-targeted.noarch
-# RUN  set -ex \
-# 	&& yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
-# 	&& yum-config-manager --enable docker-ce-edge
-
-# RUN yum update -y
-# RUN yum install -y \
-# 			supervisor.noarch \
-# 			docker-ce
-
-# RUN apt-get update && apt-get install -y \
-#     linux-image-extra-$(uname -r) \
-#     linux-image-extra-virtual \
-#     apt-transport-https \
-#     ca-certificates \
-#     curl \
-# 	vim \
-# 	wget \
-#     software-properties-common
-
-# RUN set -ex \
-# 		&& wget https://download.docker.com/linux/ubuntu/gpg \
-# 		&& apt-key add gpg \
-# 		&& echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable" | tee /etc/apt/sources.list.d/docker.list
-
-
-# RUN apt-get update
-# RUN apt-get install -y 	\
-#  			python-setuptools \
-# 			iptables \
-# 			docker-ce=17.03.2~ce-0~ubuntu-xenial
-
-# RUN set -ex \
-# 	&& easy_install pip \
-# 	&& pip install supervisor
 
 ADD packages/docker-engine-1.13.1-1.el7.centos.x86_64.rpm /tmp/docker-engine-1.13.1-1.el7.centos.x86_64.rpm 
 ADD packages/docker-engine-selinux-1.13.1-1.el7.centos.noarch.rpm /tmp/docker-engine-selinux-1.13.1-1.el7.centos.noarch.rpm
@@ -112,10 +77,8 @@ RUN set -ex \
 
 
 #Digital Certificates
-# RUN mkdir /usr/local/share/ca-certificates/docker
-# COPY conf/dkhub.funceme.CA.crt	/usr/local/share/ca-certificates/docker
-# RUN	update-ca-certificates
-
+ADD conf/dkhub.funceme.CA.crt /etc/pki/ca-trust/source/anchors/dkhub.funceme.CA.crt
+RUN	update-ca-trust
 
 #PORTS
 # TCP     10250       kubelet
